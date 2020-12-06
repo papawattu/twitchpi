@@ -8,7 +8,7 @@ const refresh_rate = process.env.OUTPUT_REFRESH || '60'
 const stream_uri = process.env.STREAM_URI
 const start_gpio_pin = process.env.START_GPIO_PIN || 4
 const autostart = process.env.AUTOSTART || false
-const button = new Gpio(start_gpio_pin, 'in', 'rising', {debounceTimeout: 10});
+const button = new Gpio(start_gpio_pin, 'in', 'rising', {debounceTimeout: 0});
 
 const args = ['-f'
     ,'v4l2'
