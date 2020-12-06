@@ -1,0 +1,25 @@
+{
+  "name": "twitchpi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/papawattu/twitchpi.git"
+  },
+  "keywords": [
+    "twitch"
+  ],
+  "author": "Jamie Nuttall",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/papawattu/twitchpi/issues"
+  },
+  "homepage": "https://github.com/papawattu/twitchpi#readme",
+  "dependencies": {
+    "ffmpeg": "0.0.4"
+  }
+}
