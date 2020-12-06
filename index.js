@@ -3,22 +3,31 @@ require('dotenv').config()
 const Gpio = require('onoff').Gpio;
 const path = require('path')
 
-const output_res = process.env.OUTPUT_RES || '1280x720'
-const refresh_rate = process.env.OUTPUT_REFRESH || '30'
+const output_res = process.env.OUTPUT_RES || '1280x800'
+const refresh_rate = process.env.OUTPUT_REFRESH || '25'
 const stream_uri = process.env.STREAM_URI
 const start_gpio_pin = process.env.START_GPIO_PIN || 4
-
+const autostart = process.env.AUTOSTART || false
 const button = new Gpio(start_gpio_pin, 'in', 'rising', {debounceTimeout: 10});
 
 const args = ['-f'
     ,'v4l2'
-    ,'-pix_fmt','yuv420p'
-    ,'-thread_queue_size','10240'
-    ,'-codec:v','h264'
-    ,'-s',output_res
-    ,'-r',refresh_rate
+//    ,'-thread_queue_size','10240'
+//    ,'-threads','4'
+//    ,'-s',output_res
+ //   ,'-r',refresh_rate
     ,'-i','/dev/video0'
-    ,'-codec:v','copy'
+    ,'-c:v','h264_omx'
+    ,'-strict','experimental'
+    ,'-x264opts','keyint=50'
+    ,'-b:v','2048k' 
+ //   ,'-crf','23'
+    ,'-bufsize','6M'
+  //  ,'-maxrate','4.5M'
+    ,'-g','50'
+  //  ,'-tune','psnr'
+    ,'-preset', 'ultrafast'
+  //  ,'-pix_fmt','yuv420p'
     ,'-codec:a','copy'
     ,'-f','flv'
     ,stream_uri]
@@ -70,3 +79,6 @@ button.watch((err, value) => {
     
 })
 
+if(autostart) {
+	startStream()
+}
