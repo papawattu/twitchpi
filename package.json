@@ -21,6 +21,7 @@
   "homepage": "https://github.com/papawattu/twitchpi#readme",
   "dependencies": {
     "dotenv": "^8.2.0",
-    "ffmpeg": "0.0.4"
+    "ffmpeg": "0.0.4",
+    "onoff": "^6.0.1"
   }
 }

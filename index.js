@@ -1,4 +1,8 @@
 require('dotenv').config() 
+
+const Gpio = require('onoff').Gpio;
+const button = new Gpio(4, 'in', 'rising', {debounceTimeout: 10});
+
 const path = require('path')
 
 const output_res = '1280x720'
@@ -9,16 +13,40 @@ const args = ['-f','v4l2','-pix_fmt','yuv420p','-thread_queue_size','10240','-co
 
 console.log(path.resolve(process.cwd(), '.env'))
 const { spawn } = require('child_process');
-const child = spawn('ffmpeg', args, { detached : true })
+
+let streaming = null
+
+function startStream()
+{
+    const child = spawn('ffmpeg', args)
 
 
-child.stdout.on('data', (data) => {
-    console.log('FFMPEG' + data);
-});
+    child.stdout.on('data', (data) => {
+        console.log('FFMPEG' + data);
+    });
+    
+    child.stderr.on('data', data => {
+        console.log('FFMPEG : ' + data);
+        
+    })
+    return child
+}
 
-child.stderr.on('data', data => {
-    console.log('FFMPEG : ' + data);
+button.watch((err, value) => {
+    if (err) {
+      throw err;
+    }
+    if(!streaming) {
+        console.log('Starting stream')
+        
+        streaming = startStream()
+
+    } else {
+        console.log('Stopping stream')
+        
+        streaming.kill()
+        streaming = null
+    }
+    
 })
 
-
-setTimeout(()=> child.kill(),20000)
