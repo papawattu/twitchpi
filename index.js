@@ -1,20 +1,40 @@
 require('dotenv').config() 
 
 const Gpio = require('onoff').Gpio;
-const button = new Gpio(4, 'in', 'rising', {debounceTimeout: 10});
-
 const path = require('path')
 
-const output_res = '1280x720'
-const refresh_rate = '30'
+const output_res = process.env.OUTPUT_RES || '1280x720'
+const refresh_rate = process.env.OUTPUT_REFRESH || '30'
 const stream_uri = process.env.STREAM_URI
+const start_gpio_pin = process.env.START_GPIO_PIN || 4
 
-const args = ['-f','v4l2','-pix_fmt','yuv420p','-thread_queue_size','10240','-codec:v','h264','-s',output_res,'-r',refresh_rate,'-i','/dev/video0','-codec:v','copy','-codec:a','copy','-f','flv',stream_uri]
+const button = new Gpio(start_gpio_pin, 'in', 'rising', {debounceTimeout: 10});
 
-console.log(path.resolve(process.cwd(), '.env'))
+const args = ['-f'
+    ,'v4l2'
+    ,'-pix_fmt','yuv420p'
+    ,'-thread_queue_size','10240'
+    ,'-codec:v','h264'
+    ,'-s',output_res
+    ,'-r',refresh_rate
+    ,'-i','/dev/video0'
+    ,'-codec:v','copy'
+    ,'-codec:a','copy'
+    ,'-f','flv'
+    ,stream_uri]
+
 const { spawn } = require('child_process');
 
 let streaming = null
+
+if(!stream_uri) {
+    console.log('No stream URI found - set STREAM_URI environment variable')
+    process.exit()
+}
+
+console.log("TwtichPi")
+
+console.log(`Button on GPIO ${start_gpio_pin}\nPress control + c to quit`)
 
 function startStream()
 {
