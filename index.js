@@ -8,6 +8,7 @@ const refresh_rate = process.env.OUTPUT_REFRESH || '60'
 const stream_uri = process.env.STREAM_URI
 const video_dev = process.env.VIDEO_DEV || '/dev/video0'
 const audio_dev = process.env.AUDIO_DEV || 'hw:0'
+const bit_rate = process.env.BIT_RATE || '4500k'
 const start_gpio_pin = process.env.START_GPIO_PIN || 4
 
 const autostart = process.env.AUTOSTART || true
@@ -20,6 +21,7 @@ const args = [
     ,'-threads','4'
     ,'-f','alsa'
     ,'-i',audio_dev
+    ,'-re'
     ,'-f','v4l2'
     ,'-i',video_dev
     ,'-map','0:0'
@@ -27,11 +29,11 @@ const args = [
     ,'-s',output_res
     ,'-r',refresh_rate
     ,'-strict','experimental'
-    ,'-b:v','4500k' 
+    ,'-b:v',bit_rate 
     ,'-bufsize','6M'
-    ,'-minrate','4500k'
-    ,'-maxrate','4500k'
-    ,'-g','60'
+    ,'-minrate',bit_rate
+    ,'-maxrate',bit_rate
+    ,'-g','30'
     ,'-pix_fmt','yuv420p'
     ,'-map','1:0'
     ,'-codec:a','aac'
