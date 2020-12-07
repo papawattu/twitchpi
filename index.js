@@ -6,29 +6,35 @@ const path = require('path')
 const output_res = process.env.OUTPUT_RES || '1280x720'
 const refresh_rate = process.env.OUTPUT_REFRESH || '60'
 const stream_uri = process.env.STREAM_URI
+const video_dev = process.env.VIDEO_DEV || '/dev/video0'
+const audio_dev = process.env.AUDIO_DEV || 'hw:0'
 const start_gpio_pin = process.env.START_GPIO_PIN || 4
-const autostart = process.env.AUTOSTART || false
+
+const autostart = process.env.AUTOSTART || true
+
 const button = new Gpio(start_gpio_pin, 'in', 'rising', {debounceTimeout: 0});
 
-const args = ['-f'
-    ,'v4l2'
-    ,'-thread_queue_size','10240'
+
+const args = [
+     '-thread_queue_size','10240'
     ,'-threads','4'
+    ,'-f','alsa'
+    ,'-i',audio_dev
+    ,'-f','v4l2'
+    ,'-i',video_dev
+    ,'-map','0:0'
+    ,'-c:v','h264_omx'
     ,'-s',output_res
     ,'-r',refresh_rate
-    ,'-i','/dev/video0'
-    ,'-c:v','h264_omx'
     ,'-strict','experimental'
-//    ,'-x264opts','keyint=60'
-    ,'-b:v','2048k' 
- //   ,'-crf','23'
+    ,'-b:v','4500k' 
     ,'-bufsize','6M'
-    ,'-maxrate','4.5M'
-    ,'-g','50'
-//    ,'-tune','psnr'
-    ,'-preset', 'ultrafast'
+    ,'-minrate','4500k'
+    ,'-maxrate','4500k'
+    ,'-g','60'
     ,'-pix_fmt','yuv420p'
-    ,'-codec:a','copy'
+    ,'-map','1:0'
+    ,'-codec:a','aac'
     ,'-f','flv'
     ,stream_uri]
 
