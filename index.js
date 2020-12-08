@@ -10,6 +10,7 @@ const video_dev = process.env.VIDEO_DEV || '/dev/video0'
 const audio_dev = process.env.AUDIO_DEV || 'hw:0'
 const bit_rate = process.env.BIT_RATE || '4500k'
 const start_gpio_pin = process.env.START_GPIO_PIN || 4
+const audio_sample_rate = process.env.AUDIO_SAMPLE_RATE || 48000
 
 const autostart = process.env.AUTOSTART || true
 
@@ -36,6 +37,7 @@ const args = [
     ,'-g','30'
     ,'-pix_fmt','yuv420p'
     ,'-map','1:0'
+    ,'-ar',audio_sample_rate
     ,'-codec:a','aac'
     ,'-f','flv'
     ,stream_uri]
