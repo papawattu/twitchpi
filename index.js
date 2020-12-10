@@ -10,7 +10,7 @@ const video_dev = process.env.VIDEO_DEV || '/dev/video0'
 const audio_dev = process.env.AUDIO_DEV || 'hw:0'
 const bit_rate = process.env.BIT_RATE || '2800k'
 const start_gpio_pin = process.env.START_GPIO_PIN || 4
-const audio_sample_rate = process.env.AUDIO_SAMPLE_RATE || 48000
+const audio_sample_rate = process.env.AUDIO_SAMPLE_RATE || 44100
 
 const autostart = process.env.AUTOSTART || true
 
@@ -20,12 +20,13 @@ const autostart = process.env.AUTOSTART || true
 const args = [
      '-thread_queue_size','10240'
     ,'-threads','4'
-//    ,'-f','alsa'
-//    ,'-i',audio_dev
+    ,'-f','alsa'
+    ,'-ac','1'
+    ,'-i',audio_dev
     ,'-re'
     ,'-f','v4l2'
     ,'-i',video_dev
-//    ,'-map','0:0'
+    ,'-map','0:0'
     ,'-c:v','h264_omx'
     ,'-s',output_res
     ,'-r',refresh_rate
@@ -36,8 +37,9 @@ const args = [
     ,'-maxrate',bit_rate
     ,'-g','30'
     ,'-pix_fmt','yuv420p'
-//    ,'-map','1:0'
-//    ,'-ar',audio_sample_rate
+    ,'-map','1:0'
+    ,'-ar',audio_sample_rate
+//    ,'-ac','1'
     ,'-codec:a','aac'
     ,'-f','flv'
     ,stream_uri]
