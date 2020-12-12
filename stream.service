@@ -1,0 +1,12 @@
+[Unit]
+Description=Stream service
+After=network-online.target
+Wants=network-online.target
+[Service]
+WorkingDirectory=/home/pi/twitchpi/
+ExecStartPre=/bin/bash -c 'until host live.justin.tv; do sleep 1; done'
+ExecStart=/home/pi/twitchpi/stream.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

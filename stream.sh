@@ -2,7 +2,7 @@
 export START_GPIO_PIN=10
 raspi-gpio set $START_GPIO_PIN pu
 v4l2-ctl --set-edid=file=/home/pi/1080P.txt --fix-edid-checksums
-sleep 5
+sleep 30
 v4l2-ctl --set-dv-bt-timings query
 cd /home/pi/twitchpi
 #npm start
@@ -54,11 +54,11 @@ ffmpeg \
     -c:v h264_omx \
     -s 1280x720 \
     -strict experimental \
-    -b:v 4500k \
+    -b:v 4200k \
     -bufsize 6M \
-    -minrate 4500k \
-    -maxrate 4500k \
-    -g 50 \
+    -minrate 4200k \
+    -maxrate 4200k \
+    -g 120 \
     -pix_fmt yuv420p \
     -map 1:0 \
     -ar 48000 \
