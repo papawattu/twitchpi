@@ -19,16 +19,20 @@ ffmpeg \
     -thread_queue_size 4096 \
     -use_wallclock_as_timestamps 1 \
     -fflags +igndts \
-    -re \
+    -r 60 \
     -i /dev/video0 \
     -c:v h264_omx \
     -s 1280x720 \
+    -r 30 \
     -strict experimental \
-    -b:v 5000k \
-    -bufsize 6M \
-    -minrate 5000k \
-    -maxrate 5000k \
-    -g 120 \
+    -b:v 4M \
+    -preset veryfast \
+    -profile:v main \
+    -bufsize 8M \
+    -minrate 4M \
+    -maxrate 4M \
+    -crf 22 \
+    -x264-params "nal-hrd=cbr:keyint=120:scenecut=0" \
     -pix_fmt yuv420p \
     -filter_complex "[0:a][1:a]join=inputs=2:channel_layout=stereo[a]" \
     -map 2:v -map "[a]" \
