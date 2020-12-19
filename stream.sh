@@ -2,7 +2,7 @@
 export START_GPIO_PIN=10
 raspi-gpio set $START_GPIO_PIN pu
 v4l2-ctl --set-edid=file=/home/pi/1080P.txt --fix-edid-checksums
-sleep 10
+sleep 30
 v4l2-ctl --set-dv-bt-timings query
 cd /home/pi/twitchpi
 ffmpeg \
