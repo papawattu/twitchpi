@@ -1,0 +1,11 @@
+[Unit]
+Description=Stream control service
+After=network-online.target
+Wants=network-online.target
+[Service]
+WorkingDirectory=/home/pi/twitchpi/
+ExecStart=/home/pi/twitchpi/restart.sh
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
