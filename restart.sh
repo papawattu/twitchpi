@@ -3,7 +3,7 @@
 
 # select pin
 GPIO=13
-
+raspi-gpio set ${GPIO} pu 
 # prepare the pin
 if [ ! -d /sys/class/gpio/gpio${GPIO} ]; then
   echo "${GPIO}" > /sys/class/gpio/export
