@@ -7,12 +7,12 @@ v4l2-ctl --set-dv-bt-timings query
 cd /home/pi/twitchpi
 ffmpeg \
     -threads 4 \
-    -thread_queue_size 4096 \
     -f alsa \
+    -thread_queue_size 4096 \
     -ac 1 \
     -i hw:0 \
-    -thread_queue_size 4096 \
     -f alsa \
+    -thread_queue_size 4096 \
     -ac 1 \
     -i hw:1 \
     -f v4l2 \
