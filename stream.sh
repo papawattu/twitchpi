@@ -2,7 +2,7 @@
 export START_GPIO_PIN=10
 raspi-gpio set $START_GPIO_PIN pu
 v4l2-ctl --set-edid=file=/home/pi/1080P.txt --fix-edid-checksums
-sleep 30
+sleep 20
 v4l2-ctl --set-dv-bt-timings query
 cd /home/pi/twitchpi
 ffmpeg \
@@ -26,13 +26,11 @@ ffmpeg \
     -r 30 \
     -strict experimental \
     -b:v 4M \
-    -preset veryfast \
+    -b:a 192k \
     -profile:v main \
     -bufsize 8M \
     -minrate 4M \
     -maxrate 4M \
-    -crf 22 \
-    -x264-params "nal-hrd=cbr:keyint=120:scenecut=0" \
     -pix_fmt yuv420p \
     -filter_complex "[0:a][1:a]join=inputs=2:channel_layout=stereo[a]" \
     -map 2:v -map "[a]" \
